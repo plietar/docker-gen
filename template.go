@@ -29,6 +29,15 @@ func exists(path string) (bool, error) {
 	return false, err
 }
 
+func read(path string) (string, error) {
+	dat, err := ioutil.ReadFile(path)
+	if err == nil {
+		return string(dat), nil
+	} else {
+		return "", err
+	}
+}
+
 func groupByMulti(entries []*RuntimeContainer, key, sep string) map[string][]*RuntimeContainer {
 	groups := make(map[string][]*RuntimeContainer)
 	for _, v := range entries {
@@ -141,6 +150,10 @@ func hasPrefix(prefix, s string) bool {
 // hasSuffix returns whether a given string is a suffix of another string
 func hasSuffix(suffix, s string) bool {
 	return strings.HasSuffix(s, suffix)
+}
+
+func lines(input string) []string {
+	return strings.Split(input, "\n")
 }
 
 func keys(input interface{}) (interface{}, error) {
@@ -310,7 +323,9 @@ func newTemplate(name string) *template.Template {
 		"intersect":     intersect,
 		"keys":          keys,
 		"last":          arrayLast,
+		"lines":         lines,
 		"replace":       strings.Replace,
+		"read":          read,
 		"parseJson":     unmarshalJson,
 		"queryEscape":   url.QueryEscape,
 		"sha1":          hashSha1,
